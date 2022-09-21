@@ -17,7 +17,6 @@ public class AuthResponse {
     private Integer roleID;
     private String firstname;
     private String lastname;
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String urlImg;
     private String email;
     private String phone;
