@@ -2,6 +2,9 @@ package com.swp.hr_backend.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,21 +20,28 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "account")
 public class Account {
     @Id
-    private String account_id;
-    @Column(unique = true, nullable = false)
+    @Column(name = "account_id")
+    private String accountID;
+    @Column(name = "username",unique = true, nullable = false)
     private String username;
-    @Column(nullable = false)
+    @Column(name = "password",nullable = false)
     private String password;
-    @Column(nullable = false)
+    @Column(name = "email" ,unique = true,nullable = false)
     private String email;
+    @Column(name = "phone",unique = true)
     private String phone;
+    @Column(name = "firstname")
     private String firstname;
+    @Column(name = "lastname")
     private String lastname;
-    private String url_img;
+    @Column(name = "url_img")
+    private String urlImg;
+    @Column(name = "gender")
     private boolean gender;
-    @Column(nullable = false)
+    @Column(name = "status" ,nullable = false)
     private boolean status;
-
 }

@@ -11,7 +11,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,10 +41,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final AccountRepository accountRepository;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response,
-            @NotNull FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request,  HttpServletResponse response,
+            FilterChain filterChain)
             throws ServletException, IOException {
-
         if (request.getServletPath().equals("/api/login") || request.getServletPath().equals("/api/refresh-token")) {
             filterChain.doFilter(request, response);
         } else {

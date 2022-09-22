@@ -5,7 +5,7 @@ import com.swp.hr_backend.model.response.LoginResponse;
 
 public class ObjectMapper {
     public static LoginResponse accountToLoginResponse(Account account) {
-        LoginResponse loginResponse = LoginResponse.builder().id(account.getAccount_id())
+        LoginResponse loginResponse = LoginResponse.builder().id(account.getAccountID())
                 .username(account.getUsername())
                 .firstName(account.getFirstname())
                 .lastName(account.getLastname())
@@ -13,7 +13,7 @@ public class ObjectMapper {
                 .gender(account.isGender())
                 .status(account.isStatus())
                 .phone(account.getPhone())
-                .urlImg(account.getUrl_img())
+                .urlImg(account.getUrlImg())
                 .build();
         return loginResponse;
 
