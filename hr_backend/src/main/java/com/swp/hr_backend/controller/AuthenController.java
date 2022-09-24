@@ -22,50 +22,59 @@ import com.swp.hr_backend.service.RoleService;
 import com.swp.hr_backend.utils.JwtTokenUtil;
 
 import lombok.RequiredArgsConstructor;
+
 @RequestMapping("/api")
 @RestController
 @RequiredArgsConstructor
 public class AuthenController {
-    private final AuthenticationManager authenticationManager;
+    // private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final AccountService accountService;
     private final EmployeeService employeeService;
     private final RoleService roleService;
-    private void authenticate(String username, String password) throws Exception {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
-        } catch (BadCredentialsException e) {
-            throw new CustomUnauthorizedException(CustomError.builder().code("unauthorized").message("Unauthorized").build());
-        }
-    }
+
+    // private void authenticate(String username, String password) throws Exception
+    // {
+    // try {
+    // authenticationManager.authenticate(new
+    // UsernamePasswordAuthenticationToken(username, password));
+    // } catch (DisabledException e) {
+    // throw new Exception("USER_DISABLED", e);
+    // } catch (BadCredentialsException e) {
+    // throw new
+    // CustomUnauthorizedException(CustomError.builder().code("unauthorized").message("Unauthorized").build());
+    // }
+    // }
     @PostMapping(value = "/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginRequest loginRequest) throws Exception {
 
-        authenticate(loginRequest.getUsername(), loginRequest.getPassword());
+        // authenticate(loginRequest.getUsername(), loginRequest.getPassword());
 
-         final LoginResponse loginResponse = ObjectMapper.accountToLoginResponse(accountService.findAccountByUsername(loginRequest.getUsername())); 
-          Account account = accountService.findAccountByUsername(loginRequest.getUsername());
-          String roleName = null;
-          Integer roleID = employeeService.findRoleIDByAccountID(account.getAccountID());
-          if( roleID != null){
-             roleName = "Candidate";
-          }
-          roleName = roleService.findRolenameByRoleID(roleID);
-          loginResponse.setRoleName(roleName);
+        // truy xuất vào db để check login
+
+        final LoginResponse loginResponse = ObjectMapper
+                .accountToLoginResponse(accountService.findAccountByUsername(loginRequest.getUsername()));
+        Account account = accountService.findAccountByUsername(loginRequest.getUsername());
+        String roleName = null;
+        Integer roleID = employeeService.findRoleIDByAccountID(account.getAccountID());
+        if (roleID != null) {
+            roleName = "Candidate";
+        }
+        roleName = roleService.findRolenameByRoleID(roleID);
+        loginResponse.setRoleName(roleName);
 
         if (!loginResponse.isStatus()) {
             throw new CustomUnauthorizedException(CustomError.builder().code("unauthorized")
                     .message("Access denied, you are deactivate").build());
         }
 
-        final String accessToken = jwtTokenUtil.generateToken(loginResponse.getUsername(), JwtTokenUtil.ACCESS_TOKEN_EXPIRED,roleName);
-        final String refreshToken = jwtTokenUtil.generateToken(loginResponse.getUsername(), JwtTokenUtil.REFRESH_TOKEN_EXPIRED,roleName);
+        final String accessToken = jwtTokenUtil.generateToken(loginResponse.getUsername(),
+                JwtTokenUtil.ACCESS_TOKEN_EXPIRED, roleName);
+        final String refreshToken = jwtTokenUtil.generateToken(loginResponse.getUsername(),
+                JwtTokenUtil.REFRESH_TOKEN_EXPIRED, roleName);
         loginResponse.setToken(accessToken);
         loginResponse.setRefreshToken(refreshToken);
         return ResponseEntity.ok(loginResponse);
     }
 
-     
 }
