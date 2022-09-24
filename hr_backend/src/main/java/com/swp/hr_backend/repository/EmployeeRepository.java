@@ -7,5 +7,5 @@ import com.swp.hr_backend.entity.Employee;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee,String> {
-    public Employee findByAccount_id(String account_id);
+    public Employee findByAccountID(String account_id);
 }

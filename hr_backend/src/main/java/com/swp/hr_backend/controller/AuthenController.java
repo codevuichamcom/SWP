@@ -27,9 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthenController {
     private final AuthenticationManager authenticationManager;
-
     private final JwtTokenUtil jwtTokenUtil;
-
     private final AccountService accountService;
     private final EmployeeService employeeService;
     private final RoleService roleService;
@@ -52,9 +50,9 @@ public class AuthenController {
           String roleName = null;
           Integer roleID = employeeService.findRoleIDByAccountID(account.getAccountID());
           if( roleID != null){
-              roleName = roleService.findRolenameByRoleID(roleID);
+             roleName = "Candidate";
           }
-          roleName = "Candidate";
+          roleName = roleService.findRolenameByRoleID(roleID);
           loginResponse.setRoleName(roleName);
 
         if (!loginResponse.isStatus()) {

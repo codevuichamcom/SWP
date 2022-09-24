@@ -1,8 +1,12 @@
-package com.swp.hr_backend.entity;
+package  com.swp.hr_backend.entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,6 +20,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 @Entity
 @Data
 @Setter
@@ -26,8 +31,10 @@ import lombok.Setter;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int role_id;
-    private String role_name;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "role")
-    private ArrayList<Employee> employees = new ArrayList<>();
+    @Column(name = "role_id")
+    private int roleID;
+    @Column(name = "role_name",nullable = false)
+    private String roleName;
+    @OneToMany(mappedBy = "role",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private List<Employee> employee;
 }
